@@ -30,6 +30,23 @@ function showScene(text, buttons = []) {
   updateInventory();
 }
 
+function showLoot(items, callback = null) {
+  lootText.innerHTML = items.join("<br>");
+  lootPopup.classList.remove("hidden");
+
+  window.lootCallback = callback;
+}
+
+function closeLoot() {
+  lootPopup.classList.add("hidden");
+
+  if (window.lootCallback) {
+    const cb = window.lootCallback;
+    window.lootCallback = null;
+    cb();
+  }
+}
+
 function startGame() {
   sceneImage.style.backgroundImage = "linear-gradient(#1d1a16, #080706)";
 

@@ -143,6 +143,16 @@ function closeLoot() {
   }
 }
 
+function showCellarBackground() {
+  sceneImage.classList.remove("character");
+  sceneImage.style.backgroundImage = "linear-gradient(#1d1a16, #080706)";
+}
+
+function showIzvraticusPortrait() {
+  sceneImage.classList.add("character");
+  sceneImage.style.backgroundImage = "url('assets/izvraticus.png')";
+}
+
 function startGame() {
   startAmbient();
 
@@ -153,7 +163,7 @@ function startGame() {
     "ключ от погреба"
   ];
 
-  sceneImage.style.backgroundImage = "linear-gradient(#1d1a16, #080706)";
+showCellarBackground();
 
   showScene(
     `Старый северный погреб.
@@ -210,6 +220,8 @@ function reportToGuard() {
 }
 
 function meetIzvraticus() {
+  showIzvraticusPortrait();
+  
   showScene(
     `Дверь открылась с тяжёлым скрипом.
 

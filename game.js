@@ -1,3 +1,5 @@
+const lootPopup = document.getElementById("loot-popup");
+const lootText = document.getElementById("loot-text");
 const storyText = document.getElementById("story-text");
 const choices = document.getElementById("choices");
 const inventoryList = document.getElementById("inventory-list");

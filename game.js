@@ -36,10 +36,9 @@ function startAmbient() {
 function playTypeSound() {
   if (!typeSound) return;
 
-  typeSound.currentTime = 0;
-  typeSound.volume = 0.15;
-
-  typeSound.play().catch(() => {});
+  const sound = typeSound.cloneNode();
+  sound.volume = 0.12;
+  sound.play().catch(() => {});
 }
 
 let typingTimer = null;
@@ -86,7 +85,7 @@ function showScene(text, buttons = []) {
   choices.appendChild(skipBtn);
 
   let i = 0;
-  const speed = 18;
+  const speed = 25;
 
   typingTimer = setInterval(() => {
   storyText.textContent += text[i];

@@ -94,10 +94,18 @@ function showScene(text, buttons = []) {
     text[i] !== " " &&
     text[i] !== "." &&
     text[i] !== "," &&
-    text[i] !== "\n"
+    text[i] !== "\n" &&
+    i % 5 === 0
   ) {
     playTypeSound();
   }
+
+  i++;
+
+  if (i >= text.length) {
+    finishTyping();
+  }
+}, speed);
 
   i++;
 

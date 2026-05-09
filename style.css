@@ -105,3 +105,9 @@ button:active {
 .hidden {
   display: none !important;
 }
+
+#scene-image.character {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+}

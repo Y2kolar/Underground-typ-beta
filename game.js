@@ -76,11 +76,6 @@ function skipText() {
   }
 }
 
-      updateInventory();
-    }
-  }, speed);
-}
-
 function showLoot(items, callback = null) {
   lootText.innerHTML = items.join("<br>");
   lootPopup.classList.remove("hidden");

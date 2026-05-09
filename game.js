@@ -1,9 +1,9 @@
-const lootPopup = document.getElementById("loot-popup");
-const lootText = document.getElementById("loot-text");
 const storyText = document.getElementById("story-text");
 const choices = document.getElementById("choices");
 const inventoryList = document.getElementById("inventory-list");
 const sceneImage = document.getElementById("scene-image");
+const lootPopup = document.getElementById("loot-popup");
+const lootText = document.getElementById("loot-text");
 
 let inventory = [
   "старая рубаха",
@@ -33,7 +33,6 @@ function showScene(text, buttons = []) {
 function showLoot(items, callback = null) {
   lootText.innerHTML = items.join("<br>");
   lootPopup.classList.remove("hidden");
-
   window.lootCallback = callback;
 }
 
@@ -48,6 +47,13 @@ function closeLoot() {
 }
 
 function startGame() {
+  inventory = [
+    "старая рубаха",
+    "штаны крестьянина",
+    "деревянная дубинка",
+    "ключ от погреба"
+  ];
+
   sceneImage.style.backgroundImage = "linear-gradient(#1d1a16, #080706)";
 
   showScene(
@@ -62,6 +68,42 @@ function startGame() {
     [
       {
         text: "Отворить дверь",
+        action: meetIzvraticus
+      },
+      {
+        text: "Не отворять. Доложить страже",
+        action: reportToGuard
+      }
+    ]
+  );
+}
+
+function reportToGuard() {
+  showScene(
+    `Кавус медленно убрал руку с дверной ручки.
+
+Шаркающие шаги за дверью продолжались.
+
+— Нет уж, — пробормотал он. — За это мне не платят.
+
+Он поднялся обратно к страже.
+
+Стражник выслушал его, нахмурился и ткнул пальцем вниз.
+
+— Ты зачем сюда вернулся?
+
+— Там кто-то ходит.
+
+— В погребе всегда кто-то ходит. Крысы, слуги, долги казны. Иди работай.
+
+— Но свет...
+
+— Свет — это хорошо. Значит, сам найдёшь метлу.
+
+Кавуса отправили обратно к двери.`,
+    [
+      {
+        text: "Вернуться и отворить дверь",
         action: meetIzvraticus
       }
     ]
@@ -110,6 +152,26 @@ function choiceConfused() {
     [
       {
         text: "Передать вещи",
+        action: coughOne
+      }
+    ]
+  );
+}
+
+function coughOne() {
+  showScene(
+    `Кавус нехотя передал свои пожитки.
+
+Извратикус довольно кивнул.
+
+Затем старик кашлянул.
+
+Один раз.
+
+Второй.`,
+    [
+      {
+        text: "Будь здоров",
         action: stealGearFog
       }
     ]
@@ -142,15 +204,9 @@ function stealGearFog() {
   inventory = [];
 
   showScene(
-    `Кавус нехотя передал свои пожитки.
+    `— Будь здоров, — сказал Кавус.
 
-Извратикус довольно кивнул.
-
-Затем старик кашлянул.
-
-Один раз.
-
-Второй.
+Извратикус поднял палец, будто это тоже было частью пророчества.
 
 На третий раз весь погреб заволок густой туман.
 
@@ -306,9 +362,53 @@ function lockpickTwo() {
 
 Теперь у вилки остался один-единственный кривой зубец.
 
-Замок щёлкнул.
+Сундук молчал.
+
+Это молчание не внушало доверия.`,
+    [
+      {
+        text: "Рискнуть и повернуть вилку",
+        action: chestOpensAfterRisk
+      },
+      {
+        text: "Не рисковать",
+        action: chestOpensWithoutRisk
+      }
+    ]
+  );
+}
+
+function chestOpensAfterRisk() {
+  showScene(
+    `Кавус сжал зубы и повернул вилку.
+
+Одинокий зубец вошёл в замок так мягко, будто всю жизнь только этого и ждал.
+
+ЩЁЛК.
 
 Сундук открылся.`,
+    [
+      {
+        text: "Открыть сундук",
+        action: openChest
+      }
+    ]
+  );
+}
+
+function chestOpensWithoutRisk() {
+  showScene(
+    `Кавус убрал руку.
+
+— Нет. Хватит с меня этой проклятой вилки.
+
+Он сделал шаг назад.
+
+ЩЁЛК.
+
+Сундук открылся сам.
+
+Где-то в сырости погреба будто хихикнули.`,
     [
       {
         text: "Открыть сундук",
@@ -355,32 +455,6 @@ function openChest() {
         ]
       );
     }
-  );
-}
-
-  showScene(
-    `В сундуке лежали вещи.
-
-Не роскошные, но после холодного пола и украденных штанов они казались даром небес.
-
-Кавус получил:
-
-— кожаные штаны
-— кожаную куртку
-— малый меч
-— свиток малого исцеления
-— чёрствый хлеб
-— бурдюк с водой
-
-Сломанная вилка осталась при нём.
-
-Почему-то теперь она выглядела полезнее, чем раньше.`,
-    [
-      {
-        text: "Подойти к закрытой двери",
-        action: finalDoor
-      }
-    ]
   );
 }
 

@@ -46,9 +46,6 @@ function showScene(text, buttons = []) {
   }, speed);
 }
 
-  updateInventory();
-}
-
 function showLoot(items, callback = null) {
   lootText.innerHTML = items.join("<br>");
   lootPopup.classList.remove("hidden");

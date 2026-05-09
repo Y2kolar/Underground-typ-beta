@@ -1,0 +1,62 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #070707;
+  color: #e8dcc2;
+  font-family: Georgia, serif;
+}
+
+#game {
+  max-width: 480px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #111;
+  display: flex;
+  flex-direction: column;
+}
+
+#scene-image {
+  height: 48vh;
+  background: linear-gradient(#1d1a16, #080706);
+  background-size: cover;
+  background-position: center;
+  border-bottom: 2px solid #3b2f20;
+}
+
+#text-box {
+  padding: 16px;
+  min-height: 220px;
+}
+
+#story-text {
+  font-size: 18px;
+  line-height: 1.45;
+  white-space: pre-line;
+}
+
+button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  background: #2a2118;
+  color: #f0dfb9;
+  border: 1px solid #7a5a2d;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+button:active {
+  background: #4a3722;
+}
+
+#inventory {
+  margin-top: auto;
+  padding: 12px;
+  background: #0b0b0b;
+  border-top: 1px solid #3b2f20;
+  font-size: 14px;
+  color: #bfae8a;
+}

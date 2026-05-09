@@ -107,13 +107,6 @@ function showScene(text, buttons = []) {
   }
 }, speed);
 
-  i++;
-
-  if (i >= text.length) {
-    finishTyping();
-  }
-}, speed);
-
   updateInventory();
 }
 

@@ -16,16 +16,35 @@ function updateInventory() {
   inventoryList.textContent = inventory.length ? inventory.join(", ") : "пусто";
 }
 
+let typingTimer = null;
+
 function showScene(text, buttons = []) {
-  storyText.textContent = text;
+  clearInterval(typingTimer);
+
+  storyText.textContent = "";
   choices.innerHTML = "";
 
-  buttons.forEach(button => {
-    const btn = document.createElement("button");
-    btn.textContent = button.text;
-    btn.onclick = button.action;
-    choices.appendChild(btn);
-  });
+  let i = 0;
+  const speed = 18;
+
+  typingTimer = setInterval(() => {
+    storyText.textContent += text[i];
+    i++;
+
+    if (i >= text.length) {
+      clearInterval(typingTimer);
+
+      buttons.forEach(button => {
+        const btn = document.createElement("button");
+        btn.textContent = button.text;
+        btn.onclick = button.action;
+        choices.appendChild(btn);
+      });
+
+      updateInventory();
+    }
+  }, speed);
+}
 
   updateInventory();
 }

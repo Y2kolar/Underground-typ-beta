@@ -4,6 +4,7 @@ const inventoryList = document.getElementById("inventory-list");
 const sceneImage = document.getElementById("scene-image");
 const lootPopup = document.getElementById("loot-popup");
 const lootText = document.getElementById("loot-text");
+const clickSound = document.getElementById("click-sound");
 
 let inventory = [
   "старая рубаха",
@@ -14,6 +15,13 @@ let inventory = [
 
 function updateInventory() {
   inventoryList.textContent = inventory.length ? inventory.join(", ") : "пусто";
+}
+
+function playClick() {
+  if (!clickSound) return;
+
+  clickSound.currentTime = 0;
+  clickSound.play().catch(() => {});
 }
 
 let typingTimer = null;
@@ -27,10 +35,10 @@ function renderButtons(buttons) {
   buttons.forEach(button => {
     const btn = document.createElement("button");
     btn.textContent = button.text;
-    btn.onclick = button.action;
-    choices.appendChild(btn);
-  });
-}
+    btn.onclick = () => {
+  playClick();
+  button.action();
+};
 
 function showScene(text, buttons = []) {
   clearInterval(typingTimer);
@@ -44,9 +52,11 @@ function showScene(text, buttons = []) {
 
   const skipBtn = document.createElement("button");
   skipBtn.textContent = "Показать текст сразу";
-  skipBtn.onclick = skipText;
-  choices.appendChild(skipBtn);
-
+  skipBtn.onclick = () => {
+  playClick();
+  skipText();
+};
+  
   let i = 0;
   const speed = 18;
 

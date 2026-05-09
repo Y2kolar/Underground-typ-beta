@@ -150,7 +150,7 @@ function showCellarBackground() {
 
 function showIzvraticusPortrait() {
   sceneImage.classList.add("character");
-  sceneImage.style.backgroundImage = "url('assets/izvraticus.png')";
+  sceneImage.style.backgroundImage = "url('assets/izvraticus.jpg')";
 }
 
 function startGame() {

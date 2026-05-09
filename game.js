@@ -17,12 +17,35 @@ function updateInventory() {
 }
 
 let typingTimer = null;
+let isTyping = false;
+let currentText = "";
+let currentButtons = [];
+
+function renderButtons(buttons) {
+  choices.innerHTML = "";
+
+  buttons.forEach(button => {
+    const btn = document.createElement("button");
+    btn.textContent = button.text;
+    btn.onclick = button.action;
+    choices.appendChild(btn);
+  });
+}
 
 function showScene(text, buttons = []) {
   clearInterval(typingTimer);
 
+  currentText = text;
+  currentButtons = buttons;
+  isTyping = true;
+
   storyText.textContent = "";
   choices.innerHTML = "";
+
+  const skipBtn = document.createElement("button");
+  skipBtn.textContent = "Показать текст сразу";
+  skipBtn.onclick = skipText;
+  choices.appendChild(skipBtn);
 
   let i = 0;
   const speed = 18;
@@ -32,14 +55,26 @@ function showScene(text, buttons = []) {
     i++;
 
     if (i >= text.length) {
-      clearInterval(typingTimer);
+      finishTyping();
+    }
+  }, speed);
 
-      buttons.forEach(button => {
-        const btn = document.createElement("button");
-        btn.textContent = button.text;
-        btn.onclick = button.action;
-        choices.appendChild(btn);
-      });
+  updateInventory();
+}
+
+function finishTyping() {
+  clearInterval(typingTimer);
+  isTyping = false;
+  storyText.textContent = currentText;
+  renderButtons(currentButtons);
+  updateInventory();
+}
+
+function skipText() {
+  if (isTyping) {
+    finishTyping();
+  }
+}
 
       updateInventory();
     }

@@ -6,6 +6,7 @@ const lootPopup = document.getElementById("loot-popup");
 const lootText = document.getElementById("loot-text");
 const clickSound = document.getElementById("click-sound");
 const ambientSound = document.getElementById("ambient-sound");
+const typeSound = document.getElementById("type-sound");
 
 let inventory = [
   "старая рубаха",
@@ -30,6 +31,15 @@ function startAmbient() {
 
   ambientSound.volume = 0.25;
   ambientSound.play().catch(() => {});
+}
+
+function playTypeSound() {
+  if (!typeSound) return;
+
+  typeSound.currentTime = 0;
+  typeSound.volume = 0.15;
+
+  typeSound.play().catch(() => {});
 }
 
 let typingTimer = null;
@@ -79,13 +89,23 @@ function showScene(text, buttons = []) {
   const speed = 18;
 
   typingTimer = setInterval(() => {
-    storyText.textContent += text[i];
-    i++;
+  storyText.textContent += text[i];
 
-    if (i >= text.length) {
-      finishTyping();
-    }
-  }, speed);
+  if (
+    text[i] !== " " &&
+    text[i] !== "." &&
+    text[i] !== "," &&
+    text[i] !== "\n"
+  ) {
+    playTypeSound();
+  }
+
+  i++;
+
+  if (i >= text.length) {
+    finishTyping();
+  }
+}, speed);
 
   updateInventory();
 }

@@ -21,24 +21,41 @@ function updateInventory() {
 
 function playClick() {
   if (!clickSound) return;
-
   clickSound.currentTime = 0;
   clickSound.play().catch(() => {});
 }
 
 function startAmbient() {
   if (!ambientSound) return;
-
   ambientSound.volume = 0.25;
   ambientSound.play().catch(() => {});
 }
 
 function playTypeSound() {
   if (!typeSound) return;
-
   const sound = typeSound.cloneNode();
   sound.volume = 0.12;
   sound.play().catch(() => {});
+}
+
+function showCellarBackground() {
+  sceneImage.classList.remove("character");
+  sceneImage.style.backgroundImage = "linear-gradient(#1d1a16, #080706)";
+}
+
+function showIzvraticusPortrait() {
+  sceneImage.classList.add("character");
+  sceneImage.style.backgroundImage = "url('assets/izvraticus.jpg')";
+}
+
+function showChestScene() {
+  sceneImage.classList.remove("character");
+  sceneImage.style.backgroundImage = "linear-gradient(#2a1d12, #090604)";
+}
+
+function showDoorScene() {
+  sceneImage.classList.remove("character");
+  sceneImage.style.backgroundImage = "linear-gradient(#16100c, #030303)";
 }
 
 let typingTimer = null;
@@ -52,13 +69,11 @@ function renderButtons(buttons) {
   buttons.forEach(button => {
     const btn = document.createElement("button");
     btn.textContent = button.text;
-
     btn.onclick = () => {
       playClick();
       startAmbient();
       button.action();
     };
-
     choices.appendChild(btn);
   });
 }
@@ -75,37 +90,35 @@ function showScene(text, buttons = []) {
 
   const skipBtn = document.createElement("button");
   skipBtn.textContent = "Показать текст сразу";
-
   skipBtn.onclick = () => {
     playClick();
     startAmbient();
     skipText();
   };
-
   choices.appendChild(skipBtn);
 
   let i = 0;
   const speed = 25;
 
   typingTimer = setInterval(() => {
-  storyText.textContent += text[i];
+    storyText.textContent += text[i];
 
-  if (
-    text[i] !== " " &&
-    text[i] !== "." &&
-    text[i] !== "," &&
-    text[i] !== "\n" &&
-    i % 5 === 0
-  ) {
-    playTypeSound();
-  }
+    if (
+      text[i] !== " " &&
+      text[i] !== "." &&
+      text[i] !== "," &&
+      text[i] !== "\n" &&
+      i % 5 === 0
+    ) {
+      playTypeSound();
+    }
 
-  i++;
+    i++;
 
-  if (i >= text.length) {
-    finishTyping();
-  }
-}, speed);
+    if (i >= text.length) {
+      finishTyping();
+    }
+  }, speed);
 
   updateInventory();
 }
@@ -143,16 +156,6 @@ function closeLoot() {
   }
 }
 
-function showCellarBackground() {
-  sceneImage.classList.remove("character");
-  sceneImage.style.backgroundImage = "linear-gradient(#1d1a16, #080706)";
-}
-
-function showIzvraticusPortrait() {
-  sceneImage.classList.add("character");
-  sceneImage.style.backgroundImage = "url('assets/izvraticus.jpg')";
-}
-
 function startGame() {
   startAmbient();
 
@@ -163,7 +166,7 @@ function startGame() {
     "ключ от погреба"
   ];
 
-showCellarBackground();
+  showCellarBackground();
 
   showScene(
     `Старый северный погреб.
@@ -175,19 +178,15 @@ showCellarBackground();
 Через щели пробивался тусклый свет.
 Изнутри доносились шаркающие шаги.`,
     [
-      {
-        text: "Отворить дверь",
-        action: meetIzvraticus
-      },
-      {
-        text: "Не отворять. Доложить страже",
-        action: reportToGuard
-      }
+      { text: "Отворить дверь", action: meetIzvraticus },
+      { text: "Не отворять. Доложить страже", action: reportToGuard }
     ]
   );
 }
 
 function reportToGuard() {
+  showCellarBackground();
+
   showScene(
     `Кавус медленно убрал руку с дверной ручки.
 
@@ -211,17 +210,14 @@ function reportToGuard() {
 
 Кавуса отправили обратно к двери.`,
     [
-      {
-        text: "Вернуться и отворить дверь",
-        action: meetIzvraticus
-      }
+      { text: "Вернуться и отворить дверь", action: meetIzvraticus }
     ]
   );
 }
 
 function meetIzvraticus() {
   showIzvraticusPortrait();
-  
+
   showScene(
     `Дверь открылась с тяжёлым скрипом.
 
@@ -235,19 +231,15 @@ function meetIzvraticus() {
 
 — О-о-о... это ты. Скажи, что это ты, избранный?`,
     [
-      {
-        text: "О чём ты говоришь, дед?",
-        action: choiceConfused
-      },
-      {
-        text: "Я уборщик. Зовут Кавус.",
-        action: choiceCleaner
-      }
+      { text: "О чём ты говоришь, дед?", action: choiceConfused },
+      { text: "Я уборщик. Зовут Кавус.", action: choiceCleaner }
     ]
   );
 }
 
 function choiceConfused() {
+  showIzvraticusPortrait();
+
   showScene(
     `Извратикус прищурился.
 
@@ -261,15 +253,14 @@ function choiceConfused() {
 
 — Снимай свои лохмотья и смени их на достойное снаряжение.`,
     [
-      {
-        text: "Передать вещи",
-        action: coughOne
-      }
+      { text: "Передать вещи", action: coughOne }
     ]
   );
 }
 
 function coughOne() {
+  showIzvraticusPortrait();
+
   showScene(
     `Кавус нехотя передал свои пожитки.
 
@@ -281,15 +272,14 @@ function coughOne() {
 
 Второй.`,
     [
-      {
-        text: "Будь здоров",
-        action: stealGearFog
-      }
+      { text: "Будь здоров", action: stealGearFog }
     ]
   );
 }
 
 function choiceCleaner() {
+  showIzvraticusPortrait();
+
   showScene(
     `— Уборщик? Кавус? Кааавус...
 
@@ -303,15 +293,13 @@ function choiceCleaner() {
 
 — Выпей это снадобье, чтобы укрепить своё дело. То есть тело.`,
     [
-      {
-        text: "Выпить снадобье",
-        action: stealGearPotion
-      }
+      { text: "Выпить снадобье", action: stealGearPotion }
     ]
   );
 }
 
 function stealGearFog() {
+  showCellarBackground();
   inventory = [];
 
   showScene(
@@ -325,15 +313,13 @@ function stealGearFog() {
 
 Как и вещей Кавуса.`,
     [
-      {
-        text: "Осмотреться",
-        action: cellarAfterRobbery
-      }
+      { text: "Осмотреться", action: cellarAfterRobbery }
     ]
   );
 }
 
 function stealGearPotion() {
+  showCellarBackground();
   inventory = [];
 
   showScene(
@@ -349,15 +335,14 @@ function stealGearPotion() {
 
 Вещей тоже.`,
     [
-      {
-        text: "Подняться и осмотреться",
-        action: cellarAfterRobbery
-      }
+      { text: "Подняться и осмотреться", action: cellarAfterRobbery }
     ]
   );
 }
 
 function cellarAfterRobbery() {
+  showCellarBackground();
+
   showScene(
     `Погреб был сырой и тесный.
 
@@ -369,14 +354,8 @@ function cellarAfterRobbery() {
 
 На ручке виднелся узор, похожий то ли на завиток, то ли на предупреждение.`,
     [
-      {
-        text: "Взять факел",
-        action: takeTorch
-      },
-      {
-        text: "Взять оловянную вилку",
-        action: takeFork
-      }
+      { text: "Взять факел", action: takeTorch },
+      { text: "Взять оловянную вилку", action: takeFork }
     ]
   );
 }
@@ -386,24 +365,20 @@ function takeTorch() {
     inventory.push("факел");
   }
 
-  showLoot(
-    ["Факел"],
-    () => {
-      showScene(
-        `Кавус взял факел.
+  showLoot(["Факел"], () => {
+    showCellarBackground();
+
+    showScene(
+      `Кавус взял факел.
 
 Стало немного светлее.
 
 К сожалению, вместе со светом стало лучше видно грязь.`,
-        [
-          {
-            text: "Взять оловянную вилку",
-            action: takeFork
-          }
-        ]
-      );
-    }
-  );
+      [
+        { text: "Взять оловянную вилку", action: takeFork }
+      ]
+    );
+  });
 }
 
 function takeFork() {
@@ -411,28 +386,26 @@ function takeFork() {
     inventory.push("оловянная вилка");
   }
 
-  showLoot(
-    ["Оловянная вилка"],
-    () => {
-      showScene(
-        `Кавус поднял оловянную вилку.
+  showLoot(["Оловянная вилка"], () => {
+    showCellarBackground();
+
+    showScene(
+      `Кавус поднял оловянную вилку.
 
 Тип: оружие / непонятно что
 Урон: 0.5
 
 Вилка выглядела жалко, но уверенно.`,
-        [
-          {
-            text: "Идти дальше по коридору",
-            action: findChest
-          }
-        ]
-      );
-    }
-  );
+      [
+        { text: "Идти дальше по коридору", action: findChest }
+      ]
+    );
+  });
 }
 
 function findChest() {
+  showChestScene();
+
   showScene(
     `Кавус двинулся дальше.
 
@@ -444,15 +417,14 @@ function findChest() {
 
 Оловянная вилка будто подходила к ней.`,
     [
-      {
-        text: "Попробовать открыть сундук вилкой",
-        action: lockpickOne
-      }
+      { text: "Попробовать открыть сундук вилкой", action: lockpickOne }
     ]
   );
 }
 
 function lockpickOne() {
+  showChestScene();
+
   showScene(
     `Кавус вставил вилку в замок и осторожно повернул.
 
@@ -462,15 +434,14 @@ function lockpickOne() {
 
 Теперь у вилки осталось два зубца.`,
     [
-      {
-        text: "Попробовать ещё раз",
-        action: lockpickTwo
-      }
+      { text: "Попробовать ещё раз", action: lockpickTwo }
     ]
   );
 }
 
 function lockpickTwo() {
+  showChestScene();
+
   showScene(
     `Кавус попробовал ещё раз.
 
@@ -484,19 +455,15 @@ function lockpickTwo() {
 
 Это молчание не внушало доверия.`,
     [
-      {
-        text: "Рискнуть и повернуть вилку",
-        action: chestOpensAfterRisk
-      },
-      {
-        text: "Не рисковать",
-        action: chestOpensWithoutRisk
-      }
+      { text: "Рискнуть и повернуть вилку", action: chestOpensAfterRisk },
+      { text: "Не рисковать", action: chestOpensWithoutRisk }
     ]
   );
 }
 
 function chestOpensAfterRisk() {
+  showChestScene();
+
   showScene(
     `Кавус сжал зубы и повернул вилку.
 
@@ -506,15 +473,14 @@ function chestOpensAfterRisk() {
 
 Сундук открылся.`,
     [
-      {
-        text: "Открыть сундук",
-        action: openChest
-      }
+      { text: "Открыть сундук", action: openChest }
     ]
   );
 }
 
 function chestOpensWithoutRisk() {
+  showChestScene();
+
   showScene(
     `Кавус убрал руку.
 
@@ -528,15 +494,14 @@ function chestOpensWithoutRisk() {
 
 Где-то в сырости погреба будто хихикнули.`,
     [
-      {
-        text: "Открыть сундук",
-        action: openChest
-      }
+      { text: "Открыть сундук", action: openChest }
     ]
   );
 }
 
 function openChest() {
+  showChestScene();
+
   inventory = [
     "сломанная оловянная вилка",
     "кожаные штаны",
@@ -557,6 +522,8 @@ function openChest() {
       "Бурдюк с водой"
     ],
     () => {
+      showChestScene();
+
       showScene(
         `В сундуке лежали вещи.
 
@@ -566,10 +533,7 @@ function openChest() {
 
 Почему-то теперь она выглядела полезнее, чем раньше.`,
         [
-          {
-            text: "Подойти к закрытой двери",
-            action: finalDoor
-          }
+          { text: "Подойти к закрытой двери", action: finalDoor }
         ]
       );
     }
@@ -577,6 +541,8 @@ function openChest() {
 }
 
 function finalDoor() {
+  showDoorScene();
+
   showScene(
     `В конце коридора стояла закрытая дверь.
 
@@ -590,24 +556,20 @@ function finalDoor() {
 
 Уровень 1.1 завершён.`,
     [
-      {
-        text: "Продолжить",
-        action: endLevel
-      }
+      { text: "Продолжить", action: endLevel }
     ]
   );
 }
 
 function endLevel() {
+  showDoorScene();
+
   showScene(
     `Переход на уровень 1.2.
 
 Пока здесь будет заглушка.`,
     [
-      {
-        text: "Начать заново",
-        action: startGame
-      }
+      { text: "Начать заново", action: startGame }
     ]
   );
 }

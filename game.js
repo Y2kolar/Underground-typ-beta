@@ -38,24 +38,38 @@ function playTypeSound() {
   sound.play().catch(() => {});
 }
 
+function setSceneImage(path) {
+  sceneImage.classList.remove("character");
+  sceneImage.style.backgroundImage = `url('${path}')`;
+}
+
 function showCellarBackground() {
   sceneImage.classList.remove("character");
   sceneImage.style.backgroundImage = "linear-gradient(#1d1a16, #080706)";
 }
 
-function showIzvraticusPortrait() {
-  sceneImage.classList.add("character");
-  sceneImage.style.backgroundImage = "url('assets/izvraticus.jpg')";
+function showGuardScene() {
+  setSceneImage("assets/guard.jpg");
+}
+
+function showIzvraticusCorridor() {
+  setSceneImage("assets/izvraticus_corridor.jpg");
+}
+
+function showIzvraticusTalk() {
+  setSceneImage("assets/izvraticus_talk.jpg");
+}
+
+function showIzvraticusSneeze() {
+  setSceneImage("assets/izvraticus_sneeze.jpg");
 }
 
 function showChestScene() {
-  sceneImage.classList.remove("character");
-  sceneImage.style.backgroundImage = "linear-gradient(#2a1d12, #090604)";
+  setSceneImage("assets/chest.jpg");
 }
 
 function showDoorScene() {
-  sceneImage.classList.remove("character");
-  sceneImage.style.backgroundImage = "linear-gradient(#16100c, #030303)";
+  setSceneImage("assets/door_open.jpg");
 }
 
 let typingTimer = null;
@@ -185,7 +199,7 @@ function startGame() {
 }
 
 function reportToGuard() {
-  showCellarBackground();
+  showGuardScene();
 
   showScene(
     `Кавус медленно убрал руку с дверной ручки.
@@ -216,7 +230,7 @@ function reportToGuard() {
 }
 
 function meetIzvraticus() {
-  showIzvraticusPortrait();
+  showIzvraticusCorridor();
 
   showScene(
     `Дверь открылась с тяжёлым скрипом.
@@ -238,7 +252,7 @@ function meetIzvraticus() {
 }
 
 function choiceConfused() {
-  showIzvraticusPortrait();
+  showIzvraticusTalk();
 
   showScene(
     `Извратикус прищурился.
@@ -259,7 +273,7 @@ function choiceConfused() {
 }
 
 function coughOne() {
-  showIzvraticusPortrait();
+  showIzvraticusSneeze();
 
   showScene(
     `Кавус нехотя передал свои пожитки.
@@ -278,7 +292,7 @@ function coughOne() {
 }
 
 function choiceCleaner() {
-  showIzvraticusPortrait();
+  showIzvraticusTalk();
 
   showScene(
     `— Уборщик? Кавус? Кааавус...
